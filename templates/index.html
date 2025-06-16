@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Housing Price Predictor (New Features)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f0f4f8; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .container { background-color: #ffffff; border-radius: 16px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); padding: 30px 40px; width: 100%; max-width: 500px; text-align: center; border: 1px solid #e2e8f0; }
+        h1 { color: #2c5282; margin-bottom: 25px; font-size: 2.25rem; font-weight: 700; }
+        label { display: block; text-align: left; margin-bottom: 8px; color: #4a5568; font-weight: 600; font-size: 1.1rem; }
+        input { width: 100%; padding: 12px; margin-bottom: 20px; border: 1px solid #cbd5e0; border-radius: 8px; box-sizing: border-box; font-size: 1rem; color: #2d3748; background-color: #f7fafc; }
+        input:focus { outline: none; border-color: #4299e1; box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5); }
+        button { background-color: #4299e1; color: white; padding: 14px 25px; border: none; border-radius: 8px; cursor: pointer; font-size: 1.25rem; font-weight: 700; transition: background-color 0.3s ease, transform 0.2s ease; box-shadow: 0 4px 10px rgba(66, 153, 225, 0.3); }
+        button:hover { background-color: #3182ce; transform: translateY(-2px); }
+        .result-box { background-color: #e0f2f7; border: 1px solid #a0daeb; border-radius: 12px; padding: 20px; margin-top: 30px; font-size: 1.25rem; color: #2c5282; font-weight: 600; display: none; animation: fadeIn 0.5s ease-out; }
+        .error-message { color: #e53e3e; font-weight: 600; margin-top: 15px; display: none; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Housing Price Predictor</h1>
+        <form id="predictionForm">
+            <label for="bathrooms">Bathrooms:</label>
+            <input type="number" id="bathrooms" name="Bathrooms" placeholder="e.g., 2" min="0" required>
+
+            <label for="bedrooms">Bedrooms:</label>
+            <input type="number" id="bedrooms" name="Bedrooms" placeholder="e.g., 3" min="0" required>
+
+            <label for="car_spaces">Car Spaces:</label>
+            <input type="number" id="car_spaces" name="Car Spaces" placeholder="e.g., 1" min="0" required>
+
+            <label for="floor_area">Floor Area (m²):</label>
+            <input type="number" id="floor_area" name="Floor area (m²)" placeholder="e.g., 120" min="0" required>
+
+            <label for="land_size">Land Size (m²):</label>
+            <input type="number" id="land_size" name="Land Size (m²)" placeholder="e.g., 300" min="0" required>
+
+            <label for="rooms_total">Rooms (total):</label>
+            <input type="number" id="rooms_total" name="Rooms (total)" placeholder="e.g., 5" min="0" required>
+
+            <button type="submit">Predict Price</button>
+        </form>
+
+        <div id="result" class="result-box">
+            <!-- Prediction result will be displayed here -->
+        </div>
+        <div id="error-message" class="error-message">
+            <!-- Error messages will be displayed here -->
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            const resultDiv = document.getElementById('result');
+            const errorDiv = document.getElementById('error-message');
+            resultDiv.style.display = 'none';
+            errorDiv.style.display = 'none';
+            resultDiv.textContent = '';
+            errorDiv.textContent = '';
+
+            try {
+                // Client-side validation for all fields
+                const requiredFields = [
+                    'Bathrooms', 'Bedrooms', 'Car Spaces',
+                    'Floor area (m²)', 'Land Size (m²)', 'Rooms (total)'
+                ];
+                for (const field of requiredFields) {
+                    if (!data[field] || data[field].trim() === '') {
+                        errorDiv.textContent = 'Please fill in all fields.';
+                        errorDiv.style.display = 'block';
+                        return;
+                    }
+                }
+
+                // Ensure numerical inputs are indeed numbers and convert them
+                // Note: The keys here must match the 'name' attributes in the HTML form
+                const payload = {
+                    'Bathrooms': parseInt(data['Bathrooms']),
+                    'Bedrooms': parseInt(data['Bedrooms']),
+                    'Car Spaces': parseInt(data['Car Spaces']),
+                    'Floor area (m²)': parseFloat(data['Floor area (m²)']),
+                    'Land Size (m²)': parseFloat(data['Land Size (m²)']),
+                    'Rooms (total)': parseInt(data['Rooms (total)'])
+                };
+
+
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload) // Send the constructed payload
+                });
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`Server error: ${response.status} - ${errorText}`);
+                }
+
+                const result = await response.json();
+
+                if (result.error) {
+                    errorDiv.textContent = 'Prediction Error: ' + result.error;
+                    errorDiv.style.display = 'block';
+                } else {
+                    const predictedPrice = parseFloat(result.predicted_price).toLocaleString('en-PH', { style: 'currency', currency: 'PHP' });
+                    resultDiv.innerHTML = `Estimated Price: <br><strong>${predictedPrice}</strong>`;
+                    resultDiv.style.display = 'block';
+                }
+
+            } catch (error) {
+                console.error('Fetch error:', error);
+                errorDiv.textContent = 'An unexpected error occurred. Please try again.';
+                errorDiv.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
