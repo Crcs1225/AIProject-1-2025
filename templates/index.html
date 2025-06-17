@@ -3,13 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My ML Projects Portfolio</title>
-    <!-- Tailwind CSS CDN -->
+    <title>Marc Daniel Caracas AI/ML Portfolio | House Price Predictor & Data Science Projects</title>
+    <meta name="description" content="Explore the AI and Machine Learning portfolio of Marc Daniel Caracas, featuring a Philippine house price predictor, data analysis, and various predictive modeling projects. Hire an AI/ML specialist.">
+    <link rel="icon" type="image/png" href="https://i.imgur.com/Ps79tKl.png" />
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f0f2f5; /* Light gray background */
+            padding-top: 6rem; /* Space for the fixed header (adjust if header height changes) */
         }
         /* Custom modal overlay styles */
         .modal-overlay {
@@ -30,63 +32,307 @@
             from { opacity: 1; transform: scale(1); }
             to { opacity: 0; transform: scale(0.95); }
         }
+
+       
+       @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+            }
+            .animate-marquee {
+            animation: marquee 30s linear infinite;
+        }
+
+        .icon-card {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s ease-in-out;
+            margin-right: 2rem; /* Ensure space for the marquee effect */
+        }
+
+        .icon-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Hero section specific styles */
+        .hero-section {
+            min-height: calc(100vh - 6rem); /* Full viewport height minus header height */
+            display: flex;
+            align-items: center;
+        }
     </style>
 </head>
 <body class="flex flex-col items-center min-h-screen p-4">
-    <!-- Header Section -->
-    <header class="w-full max-w-6xl bg-white p-4 md:p-6 rounded-lg shadow-md flex flex-row items-center justify-between mb-8 md:mb-12">
+    <header class="fixed top-0 left-0 right-0 z-50 w-full bg-white p-4 md:p-6 rounded-b-lg shadow-md flex flex-row items-center justify-between">
         <div class="flex items-center">
-            <!-- Logo with responsive name -->
             <img src="https://placehold.co/40x40/6366F1/FFFFFF?text=MD" alt="MDC Logo" class="w-10 h-10 rounded-full mr-3 shadow-sm">
-            <span class="text-2xl font-bold text-gray-800 hidden md:block">Marc Daniel Caracas <span class="text-indigo-600">AI / ML</span></span>
+            <span class="text-2xl font-bold text-gray-800 hidden md:block">zrmdcs <span class="text-indigo-600">AI / ML</span></span>
             <span class="text-2xl font-bold text-gray-800 md:hidden">MDC</span>
         </div>
         
-        <!-- Hire Me Button -->
         <button id="hireMeButton" class="px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-600 hover:to-indigo-700 text-white font-semibold rounded-full shadow-lg transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-opacity-75">
             Hire Me
         </button>
     </header>
 
-    <!-- Main Content Area -->
-    <div class="bg-white p-8 rounded-lg shadow-xl max-w-6xl w-full text-center">
-        <h1 class="text-4xl font-extrabold text-gray-800 mb-8">My Machine Learning Projects</h1>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Project Card: House Price Predictor -->
-            <a href="/house_price_predictor" class="block">
-                <div class="bg-gradient-to-br from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 cursor-pointer flex flex-col items-center justify-center h-full">
-                    <svg class="w-16 h-16 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001 1h2a1 1 0 001-1m-6 0v-4a1 1 0 011-1h2a1 1 0 011 1v4m-6 0h4"></path>
-                    </svg>
-                    <h2 class="text-2xl font-bold mb-2">House Price Philippines Predictor</h2>
-                    <p class="text-sm opacity-90 text-center">Estimate property values across the Philippines using advanced ML models.</p>
-                </div>
-            </a>
-
-            <!-- Placeholder for Future Projects (you can duplicate the above 'a' tag) -->
-            <div class="bg-gray-200 text-gray-600 rounded-xl shadow-md p-6 flex flex-col items-center justify-center h-full opacity-75">
-                <svg class="w-16 h-16 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <h2 class="text-2xl font-bold mb-2">Coming Soon!</h2>
-                <p class="text-sm text-center">More exciting ML projects are on the way.</p>
-            </div>
-
-            <div class="bg-gray-200 text-gray-600 rounded-xl shadow-md p-6 flex flex-col items-center justify-center h-full opacity-75">
-                <svg class="w-16 h-16 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
-                <h2 class="text-2xl font-bold mb-2">Another Project</h2>
-                <p class="text-sm text-center">Stay tuned for more machine learning applications.</p>
-            </div>
+    <!-- Hero Section -->
+    <section class="w-full min-h-screen flex items-center justify-center px-4 md:px-16 pb-12 pt-28 md:pt-32">
+    <div class="max-w-7xl w-full flex flex-col md:flex-row items-center justify-between gap-12">
+        
+        <!-- Text Content -->
+        <div class="md:w-8/12 text-center md:text-left">
+        <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
+            Hi, I'm 
+            <span class="bg-gradient-to-r from-purple-500 to-indigo-600 text-transparent bg-clip-text">
+            Marc Daniel Caracas
+            </span>
+        </h1>
+        <p class="text-gray-700 text-lg md:text-xl leading-relaxed max-w-3xl">
+            An aspiring AI and Machine Learning developer passionate about integrating automation, artificial intelligence, and machine learning into websites and software applications. I build intelligent solutions that enhance performance, adaptability, and user experience.
+        </p>
         </div>
+
+        <!-- Image -->
+        <div class="md:w-4/12 w-full flex justify-center">
+        <img src="https://i.imgur.com/mM7n6f0.png" 
+            alt="AI Developer Illustration"
+            class="w-full max-w-lg h-auto">
+        </div>
+
+    </div>
+    </section>
+
+
+    <!-- Projects Section -->
+    <div class="w-full min-h-screen mx-auto px-4 md:px-16 mt-12 mb-20">
+    <div class="flex flex-col md:flex-row items-center justify-between mb-10 gap-4">
+        <h2 class="text-4xl font-extrabold text-gray-800">My Projects</h2>
+        <input
+        type="text"
+        id="searchInput"
+        placeholder="Search projects..."
+        class="px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring focus:border-blue-300 w-full md:w-1/3"
+        />
     </div>
 
-    <!-- Hire Me Modal -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="projectGrid">
+        <!-- Project 1 -->
+        <a href="/house_price_predictor" class="block project-card">
+        <div class="bg-gradient-to-br from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 p-6 cursor-pointer flex flex-col items-center justify-center h-full">
+            <svg class="w-16 h-16 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001 1h2a1 1 0 001-1m-6 0v-4a1 1 0 011-1h2a1 1 0 011 1v4m-6 0h4" />
+            </svg>
+            <h2 class="text-2xl font-bold mb-2">House Price Philippines Predictor</h2>
+            <p class="text-sm opacity-90 text-center">Estimate property values across the Philippines using advanced ML models.</p>
+        </div>
+        </a>
+
+        <!-- Coming Soon Projects -->
+        <!-- Repeat this block 11x or generate dynamically -->
+        <div class="project-card bg-gray-200 text-gray-600 rounded-xl shadow-md p-6 flex flex-col items-center justify-center h-full opacity-75">
+        <svg class="w-16 h-16 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <h2 class="text-2xl font-bold mb-2">Coming Soon!</h2>
+        <p class="text-sm opacity-90 text-center">More exciting ML projects are on the way.</p>
+        </div>
+    </div>
+    </div>
+
+    <hr>
+
+    <section class="w-full max-w-7xl py-8 mb-12 overflow-hidden px-4 md:px-8">
+    
+
+    <div class="relative overflow-hidden">
+        <div class="animate-marquee flex gap-10 w-max">
+        <!-- REPEAT START -->
+        <div class="tool-icon flex flex-col items-center w-24">
+            <img src="https://img.icons8.com/color/96/000000/python.png" alt="Python" class="w-16 h-16 object-contain"/>
+            <span class="text-xs font-semibold mt-2 text-gray-700">Python</span>
+        </div>
+        <div class="tool-icon flex flex-col items-center w-24">
+            <img src="https://img.icons8.com/color/96/tensorflow.png" alt="TensorFlow" class="w-16 h-16 object-contain"/>
+            <span class="text-xs font-semibold mt-2 text-gray-700">TensorFlow</span>
+        </div>
+        <div class="tool-icon flex flex-col items-center w-24">
+            <img src="https://img.icons8.com/color/96/flask.png" alt="Flask" class="w-16 h-16 object-contain"/>
+            <span class="text-xs font-semibold mt-2 text-gray-700">Flask</span>
+        </div>
+        <div class="tool-icon flex flex-col items-center w-24">
+            <img src="https://img.icons8.com/color/96/vue-js.png" alt="Vue.js" class="w-16 h-16 object-contain"/>
+            <span class="text-xs font-semibold mt-2 text-gray-700">Vue.js</span>
+        </div>
+        <div class="tool-icon flex flex-col items-center w-24">
+            <img src="https://img.icons8.com/ultraviolet/96/react--v1.png" alt="React" class="w-16 h-16 object-contain"/>
+            <span class="text-xs font-semibold mt-2 text-gray-700">React</span>
+        </div>
+        <div class="tool-icon flex flex-col items-center w-24">
+            <img src="https://img.icons8.com/color/96/html-5--v1.png" alt="HTML" class="w-16 h-16 object-contain"/>
+            <span class="text-xs font-semibold mt-2 text-gray-700">HTML</span>
+        </div>
+        <div class="tool-icon flex flex-col items-center w-24">
+            <img src="https://img.icons8.com/color/96/css3.png" alt="CSS" class="w-16 h-16 object-contain"/>
+            <span class="text-xs font-semibold mt-2 text-gray-700">CSS</span>
+        </div>
+        <div class="tool-icon flex flex-col items-center w-24">
+            <img src="https://img.icons8.com/color/96/javascript--v1.png" alt="JavaScript" class="w-16 h-16 object-contain"/>
+            <span class="text-xs font-semibold mt-2 text-gray-700">JavaScript</span>
+        </div>
+        <div class="tool-icon flex flex-col items-center w-24">
+            <img src="https://img.icons8.com/color/96/flutter.png" alt="Flutter" class="w-16 h-16 object-contain"/>
+            <span class="text-xs font-semibold mt-2 text-gray-700">Flutter</span>
+        </div>
+        <div class="tool-icon flex flex-col items-center w-24">
+            <img src="https://img.icons8.com/?size=100&id=Omk4fWoSmCHm&format=png&color=000000" alt="Kaggle" class="w-16 h-16 object-contain"/>
+            <span class="text-xs font-semibold mt-2 text-gray-700">Kaggle</span>
+        </div>
+        <div class="tool-icon flex flex-col items-center w-24">
+            <img src="https://img.icons8.com/color/96/opencv.png" alt="OpenCV" class="w-16 h-16 object-contain"/>
+            <span class="text-xs font-semibold mt-2 text-gray-700">OpenCV</span>
+        </div>
+        <div class="tool-icon flex flex-col items-center w-24">
+            <img src="https://img.icons8.com/?size=100&id=TkX1totjFmAD&format=png&color=000000" alt="Matplotlib" class="w-16 h-16 object-contain"/>
+            <span class="text-xs font-semibold mt-2 text-gray-700">Matplotlib</span>
+        </div>
+        <div class="tool-icon flex flex-col items-center w-24">
+            <img src="https://seaborn.pydata.org/_static/logo-wide-lightbg.svg" alt="Seaborn" class="w-16 h-16 object-contain"/>
+            <span class="text-xs font-semibold mt-2 text-gray-700">Seaborn</span>
+        </div>
+        <div class="tool-icon flex flex-col items-center w-24">
+            <img src="https://img.icons8.com/fluency/96/github.png" alt="GitHub" class="w-16 h-16 object-contain"/>
+            <span class="text-xs font-semibold mt-2 text-gray-700">GitHub</span>
+        </div>
+        <div class="tool-icon flex flex-col items-center w-24">
+            <img src="https://img.icons8.com/ios-filled/100/sql.png" alt="SQL" class="w-16 h-16 object-contain"/>
+            <span class="text-xs font-semibold mt-2 text-gray-700">SQL</span>
+        </div>
+        </div>
+    </div>
+    </section>
+
+
+    <section class="w-full max-w-6xl py-12 mb-12 px-4 md:px-0">
+    <h2 class="text-4xl font-extrabold text-gray-800 text-center mb-10">My Certifications</h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Certificate Card 1 -->
+        <div class="certificate-card bg-gray-100 rounded-xl overflow-hidden shadow hover:shadow-md transition-shadow duration-300 cursor-pointer"
+            data-img-src="https://i.imgur.com/ntauRbF.png"
+            data-title="Intro to Deep Learning"
+            data-description="by Kaggle"
+            data-date="January 2025">
+        <img src="https://i.imgur.com/ntauRbF.png"
+            alt="Intro to Deep Learning"
+            class="w-full h-auto object-cover">
+        <div class="p-5 text-center">
+            <h3 class="text-lg font-semibold text-gray-900">Intro to Deep Learning</h3>
+            <p class="text-gray-600 text-sm mt-1">by Kaggle · Issued: January 2025</p>
+        </div>
+        </div>
+
+        <!-- Certificate Card 2 -->
+        <div class="certificate-card bg-gray-100 rounded-xl overflow-hidden shadow hover:shadow-md transition-shadow duration-300 cursor-pointer"
+            data-img-src="https://i.imgur.com/jlFhlkZ.png"
+            data-title="Intro to Programming"
+            data-description="by Kaggle"
+            data-date="January 2025">
+        <img src="https://i.imgur.com/jlFhlkZ.png"
+            alt="Intro to Programming"
+            class="w-full h-auto object-cover">
+        <div class="p-5 text-center">
+            <h3 class="text-lg font-semibold text-gray-900">Intro to Programming</h3>
+            <p class="text-gray-600 text-sm mt-1">by Kaggle · Issued: January 2025</p>
+        </div>
+        </div>
+
+        <!-- Certificate Card 3 -->
+        <div class="certificate-card bg-gray-100 rounded-xl overflow-hidden shadow hover:shadow-md transition-shadow duration-300 cursor-pointer"
+            data-img-src="https://i.imgur.com/FBkrYyc.png"
+            data-title="Intro to Machine Learning"
+            data-description="by Kaggle"
+            data-date="January 2025">
+        <img src="https://i.imgur.com/FBkrYyc.png"
+            alt="Intro to Machine Learning"
+            class="w-full h-auto object-cover">
+        <div class="p-5 text-center">
+            <h3 class="text-lg font-semibold text-gray-900">Intro to Machine Learning</h3>
+            <p class="text-gray-600 text-sm mt-1">by Kaggle · Issued: January 2025</p>
+        </div>
+        </div>
+
+        <!-- Certificate Card 4 -->
+        <div class="certificate-card bg-gray-100 rounded-xl overflow-hidden shadow hover:shadow-md transition-shadow duration-300 cursor-pointer"
+            data-img-src="https://i.imgur.com/7DezPhw.png"
+            data-title="Programming for Beginners using Python"
+            data-description="by DICT"
+            data-date="March 2024">
+        <img src="https://i.imgur.com/7DezPhw.png"
+            alt="Programming for Beginners using Python"
+            class="w-full h-auto object-cover">
+        <div class="p-5 text-center">
+            <h3 class="text-lg font-semibold text-gray-900">Programming for Beginners using Python</h3>
+            <p class="text-gray-600 text-sm mt-1">by DICT · Issued: March 2024</p>
+        </div>
+        </div>
+
+        <!-- Certificate Card 5 -->
+        <div class="certificate-card bg-gray-100 rounded-xl overflow-hidden shadow hover:shadow-md transition-shadow duration-300 cursor-pointer"
+            data-img-src="https://i.imgur.com/4opBxKY.png"
+            data-title="Data Analysis with Python"
+            data-description="by freeCodeCamp"
+            data-date="January 2025">
+        <img src="https://i.imgur.com/4opBxKY.png"
+            alt="Data Analysis with Python"
+            class="w-full h-auto object-cover">
+        <div class="p-5 text-center">
+            <h3 class="text-lg font-semibold text-gray-900">Data Analysis with Python</h3>
+            <p class="text-gray-600 text-sm mt-1">by freeCodeCamp · Issued: January 2025</p>
+        </div>
+        </div>
+
+        <!-- Certificate Card 6 -->
+        <div class="certificate-card bg-gray-100 rounded-xl overflow-hidden shadow hover:shadow-md transition-shadow duration-300 cursor-pointer"
+            data-img-src="https://i.imgur.com/QR5ZOA4.png"
+            data-title="Responsive Web Design"
+            data-description="by freeCodeCamp"
+            data-date="August 2024">
+        <img src="https://i.imgur.com/QR5ZOA4.png"
+            alt="Responsive Web Design"
+            class="w-full h-auto object-cover">
+        <div class="p-5 text-center">
+            <h3 class="text-lg font-semibold text-gray-900">Responsive Web Design</h3>
+            <p class="text-gray-600 text-sm mt-1">by freeCodeCamp · Issued: August 2024</p>
+        </div>
+        </div>
+
+        <!-- Certificate Card 7 -->
+        <div class="certificate-card bg-gray-100 rounded-xl overflow-hidden shadow hover:shadow-md transition-shadow duration-300 cursor-pointer"
+            data-img-src="https://i.imgur.com/7n1aFBs.png"
+            data-title="Introduction to Generative AI"
+            data-description="by Google"
+            data-date="January 2025">
+        <img src="https://i.imgur.com/7n1aFBs.png"
+            alt="Introduction to Generative AI"
+            class="w-full h-auto object-cover">
+        <div class="p-5 text-center">
+            <h3 class="text-lg font-semibold text-gray-900">Introduction to Generative AI</h3>
+            <p class="text-gray-600 text-sm mt-1">by Google · Issued: January 2025</p>
+        </div>
+        </div>
+    </div>
+    </section>
+
     <div id="hireMeModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay">
         <div class="bg-white rounded-lg shadow-xl p-8 max-w-sm w-full mx-auto relative fade-in">
-            <!-- Close Button -->
             <button id="closeModalButton" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl font-bold focus:outline-none">
                 &times;
             </button>
@@ -116,46 +362,132 @@
         </div>
     </div>
 
-    <!-- JavaScript for Modal -->
+    <div id="imageModal" class="fixed inset-0 z-[60] hidden items-center justify-center p-4 bg-black bg-opacity-50 overflow-auto">
+  <div class="bg-white rounded-lg shadow-xl p-6 max-w-2xl w-full mx-auto relative fade-in mt-10 mb-10">
+    
+    <!-- Close Button -->
+    <div class="flex justify-end mb-4">
+      <button id="closeImageModalButton"
+              class="text-gray-500 hover:text-gray-700 text-2xl font-bold focus:outline-none">
+        &times;
+      </button>
+    </div>
+
+    <!-- Image (not scrollable) -->
+    <img id="modalImage"
+         src=""
+         alt="Certificate"
+         class="w-full h-auto max-h-[80vh] rounded-lg shadow-md object-contain mb-4">
+
+    <!-- Details -->
+    <h3 id="modalTitle" class="text-2xl font-bold text-gray-800 mb-2 text-center"></h3>
+    <p id="modalDescription" class="text-gray-700 text-base mb-3 text-center"></p>
+    <span id="modalDate" class="text-gray-500 text-sm font-medium block text-center"></span>
+  </div>
+</div>
+
+
+
+    <!-- SCRIPTS HERE -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         const hireMeButton = document.getElementById('hireMeButton');
         const hireMeModal = document.getElementById('hireMeModal');
         const closeModalButton = document.getElementById('closeModalButton');
 
-        // Function to open the modal
-        function openModal() {
+        const certificateCards = document.querySelectorAll('.certificate-card');
+        const imageModal = document.getElementById('imageModal');
+        const closeImageModalButton = document.getElementById('closeImageModalButton');
+        const modalImage = document.getElementById('modalImage');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDescription = document.getElementById('modalDescription');
+        const modalDate = document.getElementById('modalDate');
+
+        // Function to open the 'Hire Me' modal
+        function openHireMeModal() {
             hireMeModal.classList.remove('hidden');
-            hireMeModal.classList.add('flex'); // Ensure flex for centering
-            // Add fade-in animation
+            hireMeModal.classList.add('flex');
             const modalContent = hireMeModal.querySelector('div');
             modalContent.classList.remove('fade-out');
             modalContent.classList.add('fade-in');
         }
 
-        // Function to close the modal
-        function closeModal() {
+        // Function to close the 'Hire Me' modal
+        function closeHireMeModal() {
             const modalContent = hireMeModal.querySelector('div');
             modalContent.classList.remove('fade-in');
             modalContent.classList.add('fade-out');
-
-            // Hide the modal completely after animation
             modalContent.addEventListener('animationend', function handler() {
                 hireMeModal.classList.add('hidden');
                 hireMeModal.classList.remove('flex');
                 modalContent.removeEventListener('animationend', handler);
-            });
+            }, { once: true });
         }
 
-        // Event listeners
-        hireMeButton.addEventListener('click', openModal);
-        closeModalButton.addEventListener('click', closeModal);
-
-        // Close modal when clicking outside of it
+        // Event listeners for 'Hire Me' modal
+        hireMeButton.addEventListener('click', openHireMeModal);
+        closeModalButton.addEventListener('click', closeHireMeModal);
         hireMeModal.addEventListener('click', (event) => {
             if (event.target === hireMeModal) {
-                closeModal();
+                closeHireMeModal();
             }
         });
+
+        // Function to open the Image modal
+        function openImageModal(imgSrc, title, description, date) {
+            modalImage.src = imgSrc;
+            modalTitle.textContent = title;
+            modalDescription.textContent = description;
+            modalDate.textContent = `Issued: ${date}`;
+            imageModal.classList.remove('hidden');
+            imageModal.classList.add('flex');
+            const modalContent = imageModal.querySelector('div');
+            modalContent.classList.remove('fade-out');
+            modalContent.classList.add('fade-in');
+        }
+
+        // Function to close the Image modal
+        function closeImageModal() {
+            const modalContent = imageModal.querySelector('div');
+            modalContent.classList.remove('fade-in');
+            modalContent.classList.add('fade-out');
+            modalContent.addEventListener('animationend', function handler() {
+                imageModal.classList.add('hidden');
+                imageModal.classList.remove('flex');
+                modalImage.src = ""; // Clear image src
+                modalTitle.textContent = ""; // Clear title
+                modalDescription.textContent = ""; // Clear description
+                modalDate.textContent = ""; // Clear date
+                modalContent.removeEventListener('animationend', handler);
+            }, { once: true });
+        }
+
+        // Event listeners for Certificate Image modal
+        certificateCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const imgSrc = card.dataset.imgSrc;
+                const title = card.dataset.title;
+                const description = card.dataset.description;
+                const date = card.dataset.date;
+                openImageModal(imgSrc, title, description, date);
+            });
+        });
+
+        closeImageModalButton.addEventListener('click', closeImageModal);
+        imageModal.addEventListener('click', (event) => {
+            if (event.target === imageModal) {
+                closeImageModal();
+            }
+        });
+        $(document).ready(function () {
+            $("#searchInput").on("keyup", function () {
+            const value = $(this).val().toLowerCase();
+            $("#projectGrid .project-card").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+            });
+        });
     </script>
+    
 </body>
 </html>
