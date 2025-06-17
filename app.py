@@ -10,9 +10,14 @@ app = Flask(__name__)
 def home():
     return render_template('index.html')
 
-@app.route('/predict', methods=['POST'])
+@app.route('/house_price_predictor') 
+def house_price_page():
+    return render_template('house_price_predictor.html')
+
+
+@app.route('/price_predict', methods=['POST'])
 # It's good practice to rename this function to avoid conflict with the imported 'predict'
-def handle_predict_request(): 
+def house_price_predictor(): 
     data = request.get_json(force=True)
     required_fields = [
         'Bathrooms', 'Bedrooms', 'Car Spaces',
