@@ -14,6 +14,11 @@ def home():
 def house_price_page():
     return render_template('house_price_predictor.html')
 
+@app.route('/carbon_intensity') 
+def carbon_intensity():
+    return render_template('carbon_intensity.html')
+
+
 
 @app.route('/price_predict', methods=['POST'])
 # It's good practice to rename this function to avoid conflict with the imported 'predict'

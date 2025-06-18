@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Track and simulate carbon intensity in the Philippines using renewable and clean energy metrics. Built with machine learning models." />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%233B82F6' viewBox='0 0 24 24'%3E%3Cpath d='M13 2L3 14h7v8l10-12h-7z'/%3E%3C/svg%3E">
+    <meta name="keywords" content="carbon intensity, electricity, emissions, renewable energy, Philippines, forecast, ML model, API, data science, machine learning" />
+    <meta name="author" content="Marc Daniel Caracas" />
+    <title>PH Carbon Intensity</title>
+    <!-- Favicon for Dashboard -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2310B981' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9z'/%3E%3Cpath d='M10.3 21a1.9 1.9 0 003.4 0'/%3E%3Cpath d='M13 14H9m7-3V7'/%3E%3C/svg%3E" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom modal overlay styles */
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        /* Fade in animation for modal */
+        .fade-in {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+        .fade-out {
+            animation: fadeOut 0.3s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.95); }
+        }
+        /* Gradient Button Class */
+        .gradient-button {
+            background-image: linear-gradient(to right, var(--tw-gradient-from, #8B5CF6), var(--tw-gradient-to, #6366F1));
+            transition: all 0.3s ease-in-out;
+        }
+        .gradient-button:hover {
+            --tw-gradient-from: #7C3AED; /* purple-600 */
+            --tw-gradient-to: #4F46E5;   /* indigo-700 */
+            transform: scale(1.02);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans p-4">
+    <div class="max-w-6xl mx-auto space-y-8 py-6">
+
+       <header class="p-8 mb-8">
+        <!-- Back Link -->
+        <div class="mb-4 text-left sm:text-left">
+            <a href="/" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 transition-colors duration-200">
+            <svg class="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M11 15l-3-3m0 0l3-3m-3 3h8m-9 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <span class="font-medium text-lg hidden sm:inline">Back to Projects</span>
+            </a>
+        </div>
+
+        <!-- Title and Subtitle -->
+        <div class="text-center">
+            <h1 class="text-4xl font-bold mb-2 text-gray-900">Philippine Carbon Intensity Dashboard</h1>
+            <p class="text-gray-600 text-lg">
+            Harnessing data science and machine learning for a greener Philippines.
+            </p>
+        </div>
+        </header>
+        <!-- Main Title -->
+
+        <!-- Main Grid Layout for Sections -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            
+
+            <!-- 🎯 Predict Section -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <section>
+                    <h2 class="text-2xl font-semibold mb-3 text-gray-800">🎯 Predict Carbon Intensity</h2>
+                    <form id="predictForm" class="grid grid-cols-1 gap-4 mb-4">
+                        <input id="re_percent" type="number" placeholder="Renewable Energy %" class="p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required>
+                        <input id="cfe_percent" type="number" placeholder="Carbon-Free Energy %" class="p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required>
+                        <button class="gradient-button text-white py-2 rounded font-semibold" type="submit">Predict</button>
+                    </form>
+                    <div id="predictionResultContainer" class="mt-4 p-3 rounded-lg hidden">
+                        <p class="font-medium text-lg" id="predictionResultText"></p>
+                        <p class="text-sm text-red-500 mt-1 hidden" id="predictionErrorMessage"></p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- 🔍 Classification Section -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <section>
+                    <h2 class="text-2xl font-semibold mb-3 text-gray-800">🔍 Classify Day Type</h2>
+                    <form id="classifyForm" class="grid grid-cols-1 gap-4 mb-4">
+                        <input id="clf_re" type="number" placeholder="Renewable Energy %" class="p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required>
+                        <input id="clf_cfe" type="number" placeholder="Carbon-Free Energy %" class="p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required>
+                        <button class="gradient-button text-white py-2 rounded font-semibold" type="submit">Classify</button>
+                    </form>
+                    <div id="classificationResultContainer" class="mt-4 p-3 rounded-lg hidden">
+                        <p class="font-medium text-lg" id="classificationResultText"></p>
+                        <p class="text-sm text-red-500 mt-1 hidden" id="classificationErrorMessage"></p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ⚡ Calculator Section -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <section>
+                    <h2 class="text-2xl font-semibold mb-3 text-gray-800">⚡ Carbon Calculator</h2>
+                    <form id="calcForm" class="grid grid-cols-1 gap-4 mb-4">
+                        <input id="kwh_used" type="number" placeholder="kWh Used" class="p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required>
+                        <input id="calc_re" type="number" placeholder="RE %" class="p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required>
+                        <input id="calc_cfe" type="number" placeholder="CFE %" class="p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required>
+                        <button class="gradient-button text-white py-2 rounded w-full font-semibold" type="submit">Calculate</button>
+                    </form>
+                    <div id="calcResultContainer" class="mt-4 p-3 rounded-lg hidden">
+                        <p class="font-medium text-lg" id="calcResultText"></p>
+                        <p class="text-sm text-red-500 mt-1 hidden" id="calcErrorMessage"></p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- 🔁 Simulate Section (Spans 2 columns on larger screens) -->
+            <div class="bg-white p-6 rounded-lg shadow-md md:col-span-2">
+                <section>
+                    <h2 class="text-2xl font-semibold mb-3 text-gray-800">🔁 Simulate Carbon Scenario</h2>
+                    <form id="simulateForm" class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+                        <input id="base_re" type="number" placeholder="Base RE %" class="p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required>
+                        <input id="base_cfe" type="number" placeholder="Base CFE %" class="p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required>
+                        <input id="adjust_re" type="number" placeholder="Adjust RE %" class="p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required>
+                        <input id="adjust_cfe" type="number" placeholder="Adjust CFE %" class="p-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500" required>
+                        <div class="col-span-full">
+                            <button class="gradient-button text-white py-2 w-full rounded font-semibold" type="submit">Simulate</button>
+                        </div>
+                    </form>
+                    <div id="simulateResultContainer" class="mt-4 p-3 rounded-lg hidden">
+                        <p class="font-medium text-lg" id="simulateResultText"></p>
+                        <p class="text-sm text-red-500 mt-1 hidden" id="simulateErrorMessage"></p>
+                    </div>
+                </section>
+            </div>
+
+            <!-- ✅ Best Days Section (single column) -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <section>
+                    <h2 class="text-2xl font-semibold mb-3 text-gray-800">✅ Suggested Optimal Days</h2>
+                    <button id="fetchBestDaysButton" class="gradient-button text-white px-4 py-2 rounded mb-4 font-semibold">Suggest Days</button>
+                    <ul id="bestDaysList" class="space-y-2 text-sm"></ul>
+                </section>
+            </div>
+
+            <!-- 📅 Forecast Section (single column) -->
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <section>
+                    <h2 class="text-2xl font-semibold mb-3 text-gray-800">📅 Forecast Carbon Intensity (7 Days)</h2>
+                    <button id="fetchForecastButton" class="gradient-button text-white px-4 py-2 rounded mb-4 font-semibold">Get Forecast</button>
+                    <ul id="forecastList" class="space-y-2 text-sm"></ul>
+                </section>
+            </div>
+
+            <!-- 📈 Trend Section (now spans 2 columns on larger screens) -->
+            <div class="bg-white p-6 rounded-lg shadow-md md:col-span-2">
+                <section>
+                    <h2 class="text-2xl font-semibold mb-3 text-gray-800">📈 Carbon Intensity Trend</h2>
+                    <button id="loadTrendButton" class="gradient-button text-white px-4 py-2 rounded mb-4 font-semibold">Get Trend</button>
+                    <p id="trendResult" class="text-gray-700 mb-4 text-sm"></p>
+                    <img id="trendPlotImage" src="https://placehold.co/600x300/E0F2FE/3B82F6?text=Trend+Plot" alt="Trend Plot" class="rounded shadow-lg w-full cursor-pointer transition-transform duration-300 transform hover:scale-[1.02] hover:shadow-xl"
+                         data-full-src="https://placehold.co/1200x800/E0F2FE/3B82F6?text=Trend+Plot+Full+Size"
+                         data-title="Carbon Intensity Trend Over Time"
+                         data-description="This plot shows the historical trend of carbon intensity, visualizing changes and patterns.">
+                </section>
+            </div>
+ 
+            <!-- About This Dashboard Section -->
+            <div class="bg-white p-6 rounded-lg shadow-md md:col-span-full">
+                <section>
+                    <h2 class="text-2xl font-semibold mb-4 text-gray-800">📊 About This Dashboard</h2>
+                    <p class="text-gray-700 leading-relaxed mb-4">
+                        This interactive dashboard provides insights into carbon intensity within the Philippines' electricity sector. It leverages various machine learning models to predict, classify, simulate, and forecast carbon emissions based on renewable (RE) and carbon-free (CFE) energy percentages.
+                    </p>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800">🌍 Data & Methodology:</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1 mb-4">
+                        <li>
+                            <span class="font-medium">Dataset:</span> The models are trained on real-world electricity data for the Philippines, primarily sourced from platforms like
+                            <a href="https://app.electricitymaps.com/zone/PH?country=PH" target="_blank" class="text-blue-600 hover:underline">Electricity Maps</a>, focusing on renewable and clean energy metrics.
+                        </li>
+                        <li>
+                            <span class="font-medium">Methodology & Inspiration:</span> The development process has been guided by best practices in machine learning deployment and web integration, drawing insights from resources like
+                            <a href="https://www.geeksforgeeks.org/machine-learning/" target="_blank" class="text-blue-600 hover:underline">GeeksforGeeks</a> and leveraging advanced problem-solving techniques provided by **ChatGPT**.
+                        </li>
+                        <li>
+                            <span class="font-medium">Backend:</span> All machine learning models are efficiently served via a <span class="font-bold text-indigo-600">FastAPI</span> backend, deployed and accessible through <a href="https://huggingface.co/spaces/miyukicodes/ph-carbon-simulator" target="_blank" class="text-blue-600 hover:underline">Hugging Face Spaces</a>.
+                        </li>
+                    </ul>
+                    <h3 class="text-xl font-semibold mb-2 text-gray-800">🧠 Machine Learning Models Employed:</h3>
+                    <ul class="list-disc list-inside text-gray-700 space-y-1 mb-4">
+                        <li><span class="font-medium">Regression Model:</span> Utilizes <span class="font-bold text-indigo-600">Linear Regression</span> to predict carbon intensity based on RE and CFE percentages.</li>
+                        <li><span class="font-medium">Forecasting Model:</span> Implements <span class="font-bold text-indigo-600">Facebook Prophet</span> for robust time-series forecasting of future carbon intensity trends over 7 days.</li>
+                        <li><span class="font-medium">Classification Model:</span> Employs <span class="font-bold text-indigo-600">Logistic Regression</span> to classify day types (e.g., "optimal," "high emission") based on energy mix.</li>
+                        <li><span class="font-medium">Trend Analysis Model:</span> Uses <span class="font-bold text-indigo-600">scipy.stats.linregress</span> for analyzing historical carbon intensity trends.</li>
+                    </ul>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal for Trend Plot -->
+    <div id="imageModal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 modal-overlay">
+        <div class="bg-white rounded-lg shadow-xl p-6 max-w-4xl w-full mx-auto relative fade-in">
+            <button id="closeImageModalButton" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-2xl font-bold focus:outline-none">
+                &times;
+            </button>
+            <img id="modalImage" src="" alt="Full size image" class="w-full h-auto rounded-lg mb-4 shadow-md">
+            <h3 id="modalImageTitle" class="text-2xl font-bold text-gray-800 mb-2 text-center"></h3>
+            <p id="modalImageDescription" class="text-gray-700 text-base mb-3 text-center"></p>
+        </div>
+    </div>
+
+    <script>
+        // Base URL for the Hugging Face Space FastAPI backend
+        const base = "https://miyukicodes-ph-carbon-simulator.hf.space";
+
+        // Helper function to reset result containers
+        function resetResultContainer(containerId, isSuccess = true) {
+            const container = document.getElementById(containerId);
+            const textElement = container.querySelector('p:not(.text-red-500)');
+            const errorElement = container.querySelector('.text-red-500');
+
+            container.classList.remove('fade-in', 'bg-red-50', 'border-red-200', 'text-red-700', 'bg-green-50', 'border-green-200', 'text-green-700');
+            errorElement.classList.add('hidden');
+            errorElement.textContent = '';
+            textElement.textContent = '';
+            container.classList.add('hidden'); // Hide by default
+        }
+
+        // Helper function to display results in a styled container
+        function displayResult(containerId, textId, errorId, data, successFormatter, errorPrefix = "Error: ") {
+            const container = document.getElementById(containerId);
+            const textElement = document.getElementById(textId);
+            const errorElement = document.getElementById(errorId);
+
+            resetResultContainer(containerId); // Clean slate
+
+            container.classList.remove('hidden');
+            container.classList.add('flex', 'fade-in'); // Show and animate
+
+            if (data && !data.error) {
+                textElement.innerHTML = successFormatter(data);
+                container.classList.add('bg-green-50', 'border-green-200', 'text-green-700');
+            } else {
+                textElement.innerHTML = '';
+                errorElement.innerText = errorPrefix + (data.error || "Something went wrong.");
+                errorElement.classList.remove('hidden');
+                container.classList.add('bg-red-50', 'border-red-200', 'text-red-700');
+            }
+        }
+
+        // Event Listeners for Forms
+        document.getElementById("predictForm").onsubmit = async (e) => {
+            e.preventDefault();
+            const re = +document.getElementById("re_percent").value;
+            const cfe = +document.getElementById("cfe_percent").value;
+            try {
+                const res = await fetch(`${base}/predict-carbon-intensity`, {
+                    method: "POST", headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ re_percent: re, cfe_percent: cfe })
+                });
+                const data = await res.json();
+                displayResult(
+                    "predictionResultContainer", "predictionResultText", "predictionErrorMessage",
+                    res.ok ? data : { error: data.detail || res.statusText },
+                    (d) => `Predicted: <span class="font-bold">${d.predicted_carbon_intensity.toFixed(2)} gCO₂/kWh</span>`
+                );
+            } catch (error) {
+                displayResult(
+                    "predictionResultContainer", "predictionResultText", "predictionErrorMessage",
+                    { error: `Network Error: ${error.message}` }
+                );
+                console.error("Prediction failed:", error);
+            }
+        };
+
+        document.getElementById("classifyForm").onsubmit = async (e) => {
+            e.preventDefault();
+            const re = +document.getElementById("clf_re").value;
+            const cfe = +document.getElementById("clf_cfe").value;
+            try {
+                const res = await fetch(`${base}/classify-day`, {
+                    method: "POST", headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ re_percent: re, cfe_percent: cfe })
+                });
+                const data = await res.json();
+                displayResult(
+                    "classificationResultContainer", "classificationResultText", "classificationErrorMessage",
+                    res.ok ? data : { error: data.detail || res.statusText },
+                    (d) => `Day classified as: <span class="font-bold">${d.classification}</span>`
+                );
+            } catch (error) {
+                displayResult(
+                    "classificationResultContainer", "classificationResultText", "classificationErrorMessage",
+                    { error: `Network Error: ${error.message}` }
+                );
+                console.error("Classification failed:", error);
+            }
+        };
+
+        document.getElementById("simulateForm").onsubmit = async (e) => {
+            e.preventDefault();
+            const payload = {
+                base_re_percent: +document.getElementById("base_re").value,
+                base_cfe_percent: +document.getElementById("base_cfe").value,
+                adjust_re: +document.getElementById("adjust_re").value,
+                adjust_cfe: +document.getElementById("adjust_cfe").value,
+            };
+            try {
+                const res = await fetch(`${base}/simulate-scenario`, {
+                    method: "POST", headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                displayResult(
+                    "simulateResultContainer", "simulateResultText", "simulateErrorMessage",
+                    res.ok ? data : { error: data.detail || res.statusText },
+                    (d) => `Original: <span class="font-bold">${d.original_prediction.toFixed(2)} gCO₂/kWh</span><br>Simulated: <span class="font-bold">${d.simulated_prediction.toFixed(2)} gCO₂/kWh</span>`
+                );
+            } catch (error) {
+                displayResult(
+                    "simulateResultContainer", "simulateResultText", "simulateErrorMessage",
+                    { error: `Network Error: ${error.message}` }
+                );
+                console.error("Simulation failed:", error);
+            }
+        };
+
+        document.getElementById("calcForm").onsubmit = async (e) => {
+            e.preventDefault();
+            const payload = {
+                kwh_used: +document.getElementById("kwh_used").value,
+                re_percent: +document.getElementById("calc_re").value,
+                cfe_percent: +document.getElementById("calc_cfe").value
+            };
+            try {
+                const res = await fetch(`${base}/carbon-calculator`, {
+                    method: "POST", headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                displayResult(
+                    "calcResultContainer", "calcResultText", "calcErrorMessage",
+                    res.ok ? data : { error: data.detail || res.statusText },
+                    (d) => `Intensity: <span class="font-bold">${d.predicted_carbon_intensity.toFixed(2)} gCO₂/kWh</span><br>Emissions: <span class="font-bold">${d.estimated_emissions_grams.toFixed(2)} g</span>`
+                );
+            } catch (error) {
+                displayResult(
+                    "calcResultContainer", "calcResultText", "calcErrorMessage",
+                    { error: `Network Error: ${error.message}` }
+                );
+                console.error("Calculation failed:", error);
+            }
+        };
+
+        // Functions for buttons in sections (Forecast, Trend, Best Days)
+        document.getElementById("loadTrendButton").onclick = async () => {
+            const resultElement = document.getElementById("trendResult");
+            const plotImage = document.getElementById("trendPlotImage");
+            resultElement.innerText = "Loading trend data...";
+            try {
+                // First, fetch the trend analysis
+                const res = await fetch(`${base}/carbon-trend`);
+                if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                const data = await res.json();
+                resultElement.innerText = `Latest Trend Data: ${data.message || 'Data fetched successfully.'}`;
+
+                // Then, fetch the image (set the plot URL)
+                const timestamp = new Date().getTime(); // prevent caching
+                plotImage.src = `${base}/carbon-trend/plot?ts=${timestamp}`;
+                plotImage.alt = "Latest Carbon Trend Plot";
+
+            } catch (error) {
+                resultElement.innerText = `Error loading trend: ${error.message}`;
+                console.error("Failed to load trend:", error);
+            }
+        };
+
+        document.getElementById("fetchForecastButton").onclick = async () => {
+            const list = document.getElementById("forecastList");
+            list.innerHTML = `<li class="bg-gray-50 p-2 rounded shadow-sm">Loading forecast...</li>`;
+            try {
+                const res = await fetch(`${base}/forecast?days=7`);
+                if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                const data = await res.json();
+                list.innerHTML = ""; // Clear loading message
+                if (data.length === 0) {
+                    list.innerHTML = `<li class="bg-gray-50 p-2 rounded shadow-sm text-gray-500">No forecast data available.</li>`;
+                } else {
+                    data.forEach(d => {
+                        const li = document.createElement("li");
+                        li.classList.add('bg-gray-50', 'p-2', 'rounded', 'shadow-sm', 'hover:bg-gray-100', 'transition-colors', 'duration-200');
+                        li.innerText = `${d.ds.split('T')[0]}: ${d.yhat.toFixed(2)} gCO₂/kWh`;
+                        list.appendChild(li);
+                    });
+                }
+            } catch (error) {
+                list.innerHTML = `<li class="bg-red-50 p-2 rounded shadow-sm text-red-700">Error: ${error.message}</li>`;
+                console.error("Forecast failed:", error);
+            }
+        };
+
+        document.getElementById("fetchBestDaysButton").onclick = async () => {
+            const list = document.getElementById("bestDaysList");
+            list.innerHTML = `<li class="bg-gray-50 p-2 rounded shadow-sm">Suggesting optimal days...</li>`;
+            try {
+                const res = await fetch(`${base}/suggest-optimal-days`);
+                if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                const data = await res.json();
+                list.innerHTML = ""; // Clear loading message
+                if (data.length === 0) {
+                    list.innerHTML = `<li class="bg-gray-50 p-2 rounded shadow-sm text-gray-500">No optimal days suggested.</li>`;
+                } else {
+                    data.forEach(d => {
+                        const li = document.createElement("li");
+                        li.classList.add('bg-gray-50', 'p-2', 'rounded', 'shadow-sm', 'hover:bg-gray-100', 'transition-colors', 'duration-200');
+                        li.innerText = `${d["Datetime (UTC)"].split('T')[0]}: ${d["Carbon intensity gCO₂eq/kWh (direct)"].toFixed(2)} gCO₂/kWh`;
+                        list.appendChild(li);
+                    });
+                }
+            } catch (error) {
+                list.innerHTML = `<li class="bg-red-50 p-2 rounded shadow-sm text-red-700">Error: ${error.message}</li>`;
+                console.error("Best days suggestion failed:", error);
+            }
+        };
+
+        // Image Modal Logic
+        const imageModal = document.getElementById('imageModal');
+        const closeImageModalButton = document.getElementById('closeImageModalButton');
+        const modalImage = document.getElementById('modalImage');
+        const modalImageTitle = document.getElementById('modalImageTitle');
+        const modalImageDescription = document.getElementById('modalImageDescription');
+        const trendPlotImage = document.getElementById('trendPlotImage');
+
+        function openImageModal(imgSrc, title, description) {
+            modalImage.src = imgSrc;
+            modalImageTitle.textContent = title;
+            modalImageDescription.textContent = description;
+            imageModal.classList.remove('hidden');
+            imageModal.classList.add('flex');
+            const modalContent = imageModal.querySelector('div');
+            modalContent.classList.remove('fade-out');
+            modalContent.classList.add('fade-in');
+        }
+
+        function closeImageModal() {
+            const modalContent = imageModal.querySelector('div');
+            modalContent.classList.remove('fade-in');
+            modalContent.classList.add('fade-out');
+            modalContent.addEventListener('animationend', function handler() {
+                imageModal.classList.add('hidden');
+                imageModal.classList.remove('flex');
+                modalImage.src = ""; // Clear image src
+                modalImageTitle.textContent = "";
+                modalImageDescription.textContent = "";
+                modalContent.removeEventListener('animationend', handler);
+            }, { once: true });
+        }
+
+        trendPlotImage.addEventListener('click', () => {
+            const fullSrc = trendPlotImage.dataset.fullSrc;
+            const title = trendPlotImage.dataset.title;
+            const description = trendPlotImage.dataset.description;
+            openImageModal(fullSrc, title, description);
+        });
+
+        closeImageModalButton.addEventListener('click', closeImageModal);
+        imageModal.addEventListener('click', (event) => {
+            if (event.target === imageModal) {
+                closeImageModal();
+            }
+        });
+    </script>
+</body>
+</html>
